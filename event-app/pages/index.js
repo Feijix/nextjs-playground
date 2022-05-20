@@ -1,14 +1,16 @@
-import Link from "next/link";
 import EventList from "../components/events/event-list";
+import { getFeaturedEvents } from "../data/api-util";
 
-import { getFeaturedEvents } from "../data/dummy-data";
-
-export default function Home() {
-  const featuredEvents = getFeaturedEvents();
+export default function Home(props) {
+  const { featuredEvents } = props;
 
   return (
     <>
       <EventList items={featuredEvents} />
     </>
   );
+}
+
+export async function getStaticProps() {
+  return { props: { featuredEvents: await getFeaturedEvents() } };
 }

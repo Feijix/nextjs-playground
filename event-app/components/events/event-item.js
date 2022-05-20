@@ -5,24 +5,24 @@ import AddressIcon from "../icons/address-icon";
 import ArrowRightIcon from "../icons/arrow-right-icon";
 
 export default function EventItem(props) {
-  const { event } = props;
+  const { title, image, date, location, id } = props.event;
 
-  const readableDate = new Date(event.date).toLocaleDateString("en-US", {
+  const readableDate = new Date(date).toLocaleDateString("en-US", {
     day: "numeric",
     month: "long",
     year: "numeric",
   });
 
-  const formattedAddress = event.location.replace(", ", "\n");
+  const formattedAddress = location.replace(", ", "\n");
 
-  const exploreLink = `/events/${event.id}`;
+  const exploreLink = `/events/${id}`;
 
   return (
-    <li key={event.id} className={classes.item}>
-      <img src={event.image} alt={event.description} />
+    <li key={id} className={classes.item}>
+      <img src={image} alt={title} />
       <div className={classes.content}>
         <div className={classes.summary}>
-          <h2>{event.title}</h2>
+          <h2>{title}</h2>
           <div className={classes.date}>
             <DateIcon />
             <time>{readableDate}</time>
