@@ -15,6 +15,10 @@ h6 {
   font-family: "Lato", sans-serif;
 }
 
+ul {
+  list-style-type: none;
+}
+
 .center {
   margin: auto;
   text-align: center;
