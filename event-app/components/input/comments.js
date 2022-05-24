@@ -5,14 +5,14 @@ import NewComment from "./new-comment";
 import classes from "./comments.module.css";
 
 function Comments(props) {
-  const { eventId } = props;
+  const { event_id } = props;
 
   const [showComments, setShowComments] = useState(false);
   const [comments, setComments] = useState([])
 
   useEffect(() => {
     if (showComments) {
-      fetch(`/api/comments/${eventId}`)
+      fetch(`/api/comments/${event_id}`)
         .then((res) => res.json())
         .then((data) => {
           setComments(data.comments)
@@ -25,7 +25,7 @@ function Comments(props) {
   }
 
   function addCommentHandler(commentData) {
-    fetch(`/api/comments/${eventId}`, {
+    fetch(`/api/comments/${event_id}`, {
       method: "POST",
       body: JSON.stringify(commentData),
       headers: {

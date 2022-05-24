@@ -1,27 +1,39 @@
-export default function handler(req, res) {
+import { MongoClient } from "mongodb";
+
+export default async function handler(req, res) {
   const event_id = req.query.event_id;
+
+  const client = await MongoClient.connect(process.env.MONGODB_EVENTS_URL);
 
   if (req.method === "POST") {
     const { email, name, text } = req.body;
 
     // TODO server side input validation
-    console.log(email, name, text);
     const newComment = {
-      id: new Date().toISOString(),
       email,
       name,
       text,
+      event_id,
     };
+
+    const db = client.db();
+    await db.collection("comments").insertOne(newComment);
+
+    client.close();
 
     res.status(201).json({ message: "Added comment", comment: newComment });
   }
 
   if (req.method === "GET") {
-    const dummyList = [
-      { id: "c1", name: "Max", text: "veri gud" },
-      { id: "c2", name: "Not Max", text: "veri bed" },
-    ];
+    const db = client.db();
+    const eventComments = await db
+      .collection("comments")
+      .find()
+      .sort({ _id: -1 })
+      .toArray();
 
-    res.status(200).json({ comments: dummyList });
+    client.close();
+
+    res.status(200).json({ comments: eventComments });
   }
 }
